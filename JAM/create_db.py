@@ -6,27 +6,59 @@ Created on Tue May 18 16:33:34 2021
 @author: alessandroaustoni
 """
 
-from psycopg2 import connect
+from psycopg2 import (connect)
 
 cleanup = (
-        'DROP TABLE IF EXISTS jam_table CASCADE'
+        'DROP TABLE IF EXISTS blog_user CASCADE',
+        'DROP TABLE IF EXISTS post'
         )
 
 commands = (
-    'CREATE TABLE jam_table (user_id SERIAL PRIMARY KEY,user_name VARCHAR(255),user_password VARCHAR(255))'
+        """
+        CREATE TABLE blog_user (
+            user_id SERIAL PRIMARY KEY,
+            user_name VARCHAR(255) UNIQUE NOT NULL,
+            user_password VARCHAR(255) NOT NULL,
+            user_mail VARCHAR(255) UNIQUE NOT NULL,
+            user_type VARCHAR(255) UNIQUE NOT NULL
+
         )
+        """,
+
+        """ 
+        CREATE TABLE post (
+                post_id SERIAL PRIMARY KEY,
+                author_id INTEGER NOT NULL,
+                created TIMESTAMP DEFAULT NOW(),
+                title VARCHAR(350) NOT NULL,
+                body VARCHAR(500) NOT NULL,
+                FOREIGN KEY (author_id)
+                    REFERENCES blog_user (user_id)
+        )
+        """)
 
 sqlCommands = (
-        'INSERT INTO jam_table (user_name, user_password) VALUES (%s, %s) RETURNING user_id'
-        )
-
-conn = connect("dbname=JAM_db user=JAM password=SWfire07")
+        'INSERT INTO blog_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s) RETURNING user_id',
+        'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
+        )       
+ 
+conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
 cur = conn.cursor()
-cur.execute(cleanup)
-cur.execute(commands)
-print('execute command')
-cur.execute(sqlCommands, ('Giuseppe', '3ety3e7'))
+
+for command in cleanup :
+    cur.execute(command)
+    
+for command in commands :
+    cur.execute(command)
+    print('execute command')
+    
+cur.execute(sqlCommands[0], ('Giuseppe', '3ety3e7', 'giuseppe@aaa.com','specialized'))
 userId = cur.fetchone()[0]
+cur.execute(sqlCommands[1], ('My First Post', 'This is the post body', userId))
+cur.execute('SELECT * FROM post')
+print(cur.fetchall())
 cur.close()
-conn.commit() 
+
+
+conn.commit()
 conn.close()
