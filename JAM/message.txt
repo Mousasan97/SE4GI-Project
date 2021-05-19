@@ -1,0 +1,12 @@
+Dear MRNM team,
+
+A new request for admin permissions has been submitted to your website.
+Those are the user informations:
+
+- Name:		     ${U_NAME}
+- Surname:       ${U_SURNAME}
+- Role: 		 ${U_ROLE}
+- Department:    ${U_DEPARTMENT}
+- Phone number:  ${U_PHONE}
+
+Please have a look at them and perform the registration in the admin section if you believe that this user is trusted.

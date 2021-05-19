@@ -24,6 +24,10 @@ import geopandas as gpd
 import folium
 from folium.plugins import MarkerCluster
 import requests
+from string import Template
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -32,6 +36,11 @@ import requests
 app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+def read_template(filename):
+    with open(filename, 'r', encoding='utf-8') as template_file:
+        template_file_content = template_file.read()
+    return Template(template_file_content)
 
 def get_dbConn():
     if 'dbConn' not in g:
@@ -46,6 +55,59 @@ def close_dbConn():
         g.dbComm.close()
         g.pop('dbConn')
 
+@app.route('/admin-request', methods=('GET', 'POST'))
+def registeradmin():
+    if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        role = request.form['role']
+        department = request.form['department']
+        phone = request.form['phone']
+        
+        error = None
+
+        if not name:
+            error = 'name is required.'
+        elif not surname:
+            error = 'surname is required.'
+
+        elif not role:
+            error = 'role is required.'
+
+        elif not department:
+            error = 'Work department is required.'
+            
+        elif not phone:
+            error = 'phone number is required to be contacted by the admin.'    
+            
+        else :
+            #insert here the code for sending the email
+            email_template=read_template('message.txt')
+            # set up the SMTP server
+            s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+            s.starttls()
+            s.login('mrnm.requesthandler@gmail.com', 'SWfire07')
+            msg = MIMEMultipart()       # create a message
+            # add in the actual information to the message template
+            message = email_template.substitute(U_NAME=name,U_SURNAME=surname,U_ROLE=role,U_DEPARTMENT=department,U_PHONE=phone)
+            msg['From']='mrnm.requesthandler@gmail.com'
+            msg['To']='mrnm.jam.team@gmail.com'
+            msg['Subject']="ADMIN SUBMISSION REQUEST"
+            # add in the message body
+            msg.attach(MIMEText(message, 'plain'))
+            # send the message via the server set up earlier.
+            s.send_message(msg)
+    
+            del msg
+            return redirect(url_for('success'))
+
+        flash(error)
+
+    return render_template('auth/register-admin.html')
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
 
 @app.route('/map')
 def map_():
