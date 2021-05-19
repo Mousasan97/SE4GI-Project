@@ -42,7 +42,7 @@ sqlCommands = (
         'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
         )       
  
-conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
+conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'")
 cur = conn.cursor()
 
 for command in cleanup :

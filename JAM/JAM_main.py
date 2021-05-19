@@ -277,4 +277,6 @@ def delete(id):
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
+print('doneeee');    
+    
