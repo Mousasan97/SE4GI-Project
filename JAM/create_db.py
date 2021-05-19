@@ -9,13 +9,13 @@ Created on Tue May 18 16:33:34 2021
 from psycopg2 import (connect)
 
 cleanup = (
-        'DROP TABLE IF EXISTS blog_user CASCADE',
+        'DROP TABLE IF EXISTS jam_user CASCADE',
         'DROP TABLE IF EXISTS post'
         )
 
 commands = (
         """
-        CREATE TABLE blog_user (
+        CREATE TABLE jam_user (
             user_id SERIAL PRIMARY KEY,
             user_name VARCHAR(255) UNIQUE NOT NULL,
             user_password VARCHAR(255) NOT NULL,
@@ -42,7 +42,7 @@ sqlCommands = (
         'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
         )       
  
-conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'")
+conn = connect("host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'")
 cur = conn.cursor()
 
 for command in cleanup :

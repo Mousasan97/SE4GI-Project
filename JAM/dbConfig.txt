@@ -1,1 +1,1 @@
-host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'
+host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'
