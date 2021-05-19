@@ -33,12 +33,12 @@ commands = (
                 title VARCHAR(350) NOT NULL,
                 body VARCHAR(500) NOT NULL,
                 FOREIGN KEY (author_id)
-                    REFERENCES blog_user (user_id)
+                    REFERENCES jam_user (user_id)
         )
         """)
 
 sqlCommands = (
-        'INSERT INTO blog_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s) RETURNING user_id',
+        'INSERT INTO jam_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s) RETURNING user_id',
         'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
         )       
  

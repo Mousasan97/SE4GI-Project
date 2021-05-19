@@ -94,7 +94,7 @@ def register():
             conn = get_dbConn()
             cur = conn.cursor()
             cur.execute(
-            'SELECT user_id FROM blog_user WHERE user_name = %s', (username,))
+            'SELECT user_id FROM jam_user WHERE user_name = %s', (username,))
             if cur.fetchone() is not None:
                 error = 'User {} is already registered.'.format(username)
                 cur.close()
@@ -103,7 +103,7 @@ def register():
             conn = get_dbConn()
             cur = conn.cursor()
             cur.execute(
-                'INSERT INTO blog_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s)',
+                'INSERT INTO jam_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s)',
                 (username, generate_password_hash(password), mail, type_,)
             )
             cur.close()
@@ -123,7 +123,7 @@ def login():
         cur = conn.cursor()
         error = None
         cur.execute(
-            'SELECT * FROM blog_user WHERE user_name = %s', (username,)
+            'SELECT * FROM jam_user WHERE user_name = %s', (username,)
         )
         user = cur.fetchone()
         cur.close()
@@ -159,7 +159,7 @@ def load_logged_in_user():
         conn = get_dbConn()
         cur = conn.cursor()
         cur.execute(
-            'SELECT * FROM blog_user WHERE user_id = %s', (user_id,)
+            'SELECT * FROM jam_user WHERE user_id = %s', (user_id,)
         )
         g.user = cur.fetchone()
         cur.close()
@@ -177,9 +177,9 @@ def index():
     conn = get_dbConn()
     cur = conn.cursor()
     cur.execute(
-            """SELECT blog_user.user_name, post.post_id, post.created, post.title, post.body 
-               FROM blog_user, post WHERE  
-                    blog_user.user_id = post.author_id"""
+            """SELECT jam_user.user_name, post.post_id, post.created, post.title, post.body 
+               FROM jam_user, post WHERE  
+                    jam_user.user_id = post.author_id"""
                     )
     posts = cur.fetchall()
     cur.close()
