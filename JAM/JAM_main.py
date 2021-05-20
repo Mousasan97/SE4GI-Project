@@ -109,6 +109,10 @@ def registeradmin():
 def success():
     return render_template('success.html')
 
+@app.route('/access-denied')
+def access_denied():
+    return render_template('access_denied.html')
+
 @app.route('/map')
 def map_():
     
@@ -131,13 +135,59 @@ def map_():
 
     return render_template('map_fol.html')
 
+@app.route('/admin-register', methods=('GET', 'POST'))
+def admin_register():
+    user_type=session.get('admin')
+    if user_type==0 or user_type==None:
+        return redirect(url_for('access_denied'))
+    else :
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            mail = request.form['mail']
+            type_ = 1
+            
+            error = None
+    
+            if not username:
+                error = 'Username is required.'
+            elif not password:
+                error = 'Password is required.'
+    
+            elif not mail:
+                error = 'Mail is required.'
+                
+            else :
+                conn = get_dbConn()
+                cur = conn.cursor()
+                cur.execute(
+                'SELECT user_id FROM jam_user WHERE user_name = %s', (username,))
+                if cur.fetchone() is not None:
+                    error = 'User {} is already registered.'.format(username)
+                    cur.close()
+    
+            if error is None:
+                conn = get_dbConn()
+                cur = conn.cursor()
+                cur.execute(
+                    'INSERT INTO jam_user (user_name, user_password, user_mail, admin) VALUES (%s, %s, %s, %s)',
+                    (username, generate_password_hash(password), mail, type_,)
+                )
+                cur.close()
+                conn.commit()
+                return redirect(url_for('login'))
+    
+            flash(error)
+    
+        return render_template('auth/register.html')
+
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         mail = request.form['mail']
-        type_ = request.form['type_']
+        type_ = 0
         
         error = None
 
@@ -148,9 +198,6 @@ def register():
 
         elif not mail:
             error = 'Mail is required.'
-
-        elif not type_:
-            error = 'Kind of user is required.'
             
         else :
             conn = get_dbConn()
@@ -165,7 +212,7 @@ def register():
             conn = get_dbConn()
             cur = conn.cursor()
             cur.execute(
-                'INSERT INTO jam_user (user_name, user_password, user_mail, user_type) VALUES (%s, %s, %s, %s)',
+                'INSERT INTO jam_user (user_name, user_password, user_mail, admin) VALUES (%s, %s, %s, %s)',
                 (username, generate_password_hash(password), mail, type_,)
             )
             cur.close()
