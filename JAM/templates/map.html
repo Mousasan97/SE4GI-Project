@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <head>
 <title>{% block title %}{% endblock %} - RODI - Milano Road Network Monitor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 <nav>
   <h1><a href="/index">RODI - Milano Road Network Monitor</a></h1>
@@ -15,6 +16,7 @@
       <li><a href="/register">Register</a>
       <li><a href="/login">Log In</a>
       <li><a href="/map">Map</a>
+      <li><a href="/dash">Dashboard</a>
     {% endif %}
   </ul>
 </nav>
