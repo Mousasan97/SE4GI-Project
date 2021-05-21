@@ -7,6 +7,7 @@ Created on Tue May 18 16:33:34 2021
 """
 
 from psycopg2 import (connect)
+from werkzeug.security import  generate_password_hash
 
 cleanup = (
         'DROP TABLE IF EXISTS jam_user CASCADE',
@@ -53,7 +54,9 @@ for command in commands :
     print('execute command')
     
 cur.execute(sqlCommands[0], ('Giuseppe', '3ety3e7', 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> admin_user
-cur.execute(sqlCommands[0], ('JAM_team', 'Geoinfo2021', 'mrnm.jam.team@gmail.com','1')) 
+pw='Geoinfo2021'
+admin_pass=generate_password_hash(pw)
+cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','1')) 
 userId = cur.fetchone()[0]
 cur.execute(sqlCommands[1], ('My First Post', 'This is the post body', userId))
 cur.execute('SELECT * FROM post')
