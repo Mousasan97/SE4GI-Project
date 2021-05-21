@@ -1,0 +1,10 @@
+{% extends "map.html" %}
+{% block title %} RODI - Milano Road Network Monitor {% endblock %}
+{% block head %} {{ super() }} {% endblock %}
+{% block body %}
+    {% include "map_analytics.html" %}
+    {% include "bar_size.html" %}
+    {% include "bar_kind_of_distr.html" %}
+    {% include "bar_risk.html" %}
+    {% include "bar_material.html" %}
+{% endblock %}

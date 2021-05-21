@@ -28,7 +28,9 @@ from string import Template
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+import plotly.express as px
+import plotly.graph_objects as go
+from make_graphs import dash_
 
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -112,6 +114,14 @@ def success():
 @app.route('/access-denied')
 def access_denied():
     return render_template('access_denied.html')
+
+@app.route('/dash')
+def dash_make():
+    #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
+    dash_()
+   
+    #Then, Jinja renders the html template with all the graphs.  
+    return render_template('dash_templ.html')
 
 @app.route('/map')
 def map_():
@@ -386,6 +396,6 @@ def delete(id):
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 print('doneeee');    
     
