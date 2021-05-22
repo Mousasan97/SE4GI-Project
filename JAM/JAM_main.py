@@ -147,7 +147,7 @@ def map_():
 
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():
-    user_type=session.get('admin')
+    user_type=load_admin()
     if user_type==0 or user_type==None:
         return redirect(url_for('access_denied'))
     else :
@@ -287,6 +287,23 @@ def load_logged_in_user():
         return False
     else: 
         return True
+
+def load_admin():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        conn = get_dbConn()
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM jam_user WHERE user_id = %s', (user_id,)
+        )
+        g.user = cur.fetchone()
+        admin=g.user[4]
+        cur.close()
+        conn.commit()
+        return admin
 
 
 # Create a URL route in our application for "/"
