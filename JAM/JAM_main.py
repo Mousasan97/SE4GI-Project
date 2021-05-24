@@ -37,7 +37,7 @@ app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')   
+engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')   
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -294,7 +294,14 @@ def register():
             if cur.fetchone() is not None:
                 error = 'User {} is already registered.'.format(username)
                 cur.close()
-
+                
+             #new below  
+            cur.execute(
+            'SELECT user_id FROM jam_user WHERE user_mail = %s', (mail,))
+            if cur.fetchone() is not None:
+                error = 'This mail {} is already registered.'.format(mail)
+                cur.close()
+                
         if error is None:
             conn = get_dbConn()
             cur = conn.cursor()
