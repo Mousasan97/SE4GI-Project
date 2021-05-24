@@ -188,8 +188,12 @@ def access_denied():
 
 @app.route('/dash')
 def dash_make():
+    user_type=load_admin()
+    if user_type==0 or user_type==None:
+        return redirect(url_for('access_denied'))
     #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
-    dash_()
+    else:
+        dash_()
    
     #Then, Jinja renders the html template with all the graphs.  
     return render_template('dash_templ.html')
@@ -212,9 +216,10 @@ def map_():
 
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():
-    loading=load_admin() #now we are passing a list
-    user_type=loading[0] #For that reason we are getting the 1st value
-    if user_type==0 or user_type==None:
+
+    user_type=load_admin()
+    if user_type==0 or user_type==None or user_type==1:
+
         return redirect(url_for('access_denied'))
     else :
         if request.method == 'POST':
@@ -367,10 +372,9 @@ def load_admin():
         )
         g.user = cur.fetchone()
         admin=g.user[4]
-        mail=g.user[3]
         cur.close()
         conn.commit()
-        return [admin,mail]
+        return admin
 
 
 # Create a URL route in our application for "/"
