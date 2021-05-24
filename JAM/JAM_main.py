@@ -117,8 +117,12 @@ def access_denied():
 
 @app.route('/dash')
 def dash_make():
+    user_type=load_admin()
+    if user_type==0 or user_type==None:
+        return redirect(url_for('access_denied'))
     #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
-    dash_()
+    else:
+        dash_()
    
     #Then, Jinja renders the html template with all the graphs.  
     return render_template('dash_templ.html')
@@ -148,7 +152,7 @@ def map_():
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():
     user_type=load_admin()
-    if user_type==0 or user_type==None:
+    if user_type==0 or user_type==None or user_type==1:
         return redirect(url_for('access_denied'))
     else :
         if request.method == 'POST':
