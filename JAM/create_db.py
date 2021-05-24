@@ -56,7 +56,7 @@ for command in commands :
 cur.execute(sqlCommands[0], ('Giuseppe', '3ety3e7', 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> admin_user
 pw='Geoinfo2021'
 admin_pass=generate_password_hash(pw)
-cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','1')) 
+cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','2')) 
 userId = cur.fetchone()[0]
 cur.execute(sqlCommands[1], ('My First Post', 'This is the post body', userId))
 cur.execute('SELECT * FROM post')
