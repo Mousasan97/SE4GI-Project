@@ -86,7 +86,7 @@ def close_dbConn():
 @app.route('/user_requests', methods=('GET', 'POST'))        
 def requests_user():
     loading=load_admin() #now we are passing a list
-    user_mail=loading[1] #Mail of user
+    user_mail=loading[0] #Mail of user
     conn = get_dbConn()
     cur = conn.cursor()
     cur.execute(
@@ -97,36 +97,37 @@ def requests_user():
     
     cur.close()
     conn.commit()
-    return render_template('userrequests/index.html', ep5=df_requests)
+    return render_template('distresess_user.html', ep5=df_requests)
 
-@app.route('/modify_requests', methods=('GET', 'POST'))        
-def change_status():
+##TO MERGE INTO A UNIQUE FUNCTION WITH THE PREVIOUS ONE AND IMPLEMENT
+# @app.route('/modify_requests', methods=('GET', 'POST'))        
+# def change_status():
 
-    update_req_ep5()
+#     update_req_ep5()
     
-    conn = get_dbConn()
-    cur = conn.cursor()
+#     conn = get_dbConn()
+#     cur = conn.cursor()
        
-    cur.execute('SELECT * FROM ep5')
+#     cur.execute('SELECT * FROM ep5')
     
-    df_requests = cur.fetchall()
+#     df_requests = cur.fetchall()
  
-    dataframe_requests=pd.DataFrame(df_requests)
+#     dataframe_requests=pd.DataFrame(df_requests)
     
-    if request.method == 'POST':
+#     if request.method == 'POST':
 
-          for row in range(len(dataframe_requests)):
+#           for row in range(len(dataframe_requests)):
              
-             if request.form['submit_button'] == row[0]:
+#              if request.form['submit_button'] == row[0]:
     
-                     distress_update = ("UPDATE TABLE ep5 SET status_request='IN_CHARGE' WHERE ec5_uuid == %s", (row[0],))
+#                      distress_update = ("UPDATE TABLE ep5 SET status_request='IN_CHARGE' WHERE ec5_uuid == %s", (row[0],))
     
-                     cur.execute(distress_update)
+#                      cur.execute(distress_update)
     
-    cur.close()
-    conn.commit()
+#     cur.close()
+#     conn.commit()
     
-    return render_template('userrequests/index.html', ep5=df_requests)
+#     return render_template('userrequests/index.html', ep5=df_requests)
 
 @app.route('/admin-request', methods=('GET', 'POST'))
 def registeradmin():
@@ -188,7 +189,8 @@ def access_denied():
 
 @app.route('/dash')
 def dash_make():
-    user_type=load_admin()
+    loading=load_admin()
+    user_type=loading[1]
     if user_type==0 or user_type==None:
         return redirect(url_for('access_denied'))
     #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
@@ -217,7 +219,8 @@ def map_():
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():
 
-    user_type=load_admin()
+    loading=load_admin()
+    user_type=loading[1]
     if user_type==0 or user_type==None or user_type==1:
 
         return redirect(url_for('access_denied'))
@@ -371,10 +374,11 @@ def load_admin():
             'SELECT * FROM jam_user WHERE user_id = %s', (user_id,)
         )
         g.user = cur.fetchone()
+        mail=g.user[3]
         admin=g.user[4]
         cur.close()
         conn.commit()
-        return admin
+        return [mail, admin]
 
 
 # Create a URL route in our application for "/"

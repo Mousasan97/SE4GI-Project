@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 def dash_():
-
+    
     response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')
     raw_data = response.text
     data = json.loads(raw_data)
