@@ -36,14 +36,31 @@ commands = (
                 FOREIGN KEY (author_id)
                     REFERENCES jam_user (user_id)
         )
-        """)
+        """
+#
+#        """ 
+#        CREATE TABLE requests_distresess (
+#                request_id SERIAL PRIMARY KEY,
+#                time TIME,
+#                date DATE NOT NULL,
+#                material VARCHAR(500) NOT NULL,
+#                kind_distress VARCHAR(500) NOT NULL,
+#                size VARCHAR(500) NOT NULL,
+#                risk VARCHAR(500) NOT NULL,
+#                latitude VARCHAR(500) NOT NULL,
+#                longitude VARCHAR(500) NOT NULL,
+#                FOREIGN KEY (user_mail_req)
+#                    REFERENCES jam_user (user_mail)
+#        )
+#        """        
+        )
 
 sqlCommands = (
         'INSERT INTO jam_user (user_name, user_password, user_mail, admin) VALUES (%s, %s, %s, %s) RETURNING user_id',
         'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
         )       
- 
-conn = connect("host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'")
+
+conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
 cur = conn.cursor()
 
 for command in cleanup :
@@ -58,11 +75,12 @@ pw='Geoinfo2021'
 admin_pass=generate_password_hash(pw)
 cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','1')) 
 userId = cur.fetchone()[0]
+
 cur.execute(sqlCommands[1], ('My First Post', 'This is the post body', userId))
 cur.execute('SELECT * FROM post')
 print(cur.fetchall())
-cur.close()
 
+cur.close()
 
 conn.commit()
 conn.close()

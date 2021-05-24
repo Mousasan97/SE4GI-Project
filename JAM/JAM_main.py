@@ -17,7 +17,7 @@ from werkzeug.exceptions import abort
 from psycopg2 import (
         connect
 )
-
+from sqlalchemy import create_engine
 import json
 import pandas as pd
 import geopandas as gpd
@@ -28,8 +28,6 @@ from string import Template
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import plotly.express as px
-import plotly.graph_objects as go
 from make_graphs import dash_
 
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -38,6 +36,8 @@ from make_graphs import dash_
 app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')   
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -52,10 +52,81 @@ def get_dbConn():
     
     return g.dbConn
 
+def update_req_ep5():
+    
+    response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')
+    raw_data = response.text
+    data = json.loads(raw_data)
+    data_df = pd.json_normalize(data['data']['entries'])
+    data_df['lat'] = pd.to_numeric(data_df['4_Specify_the_positi.longitude'], errors='coerce')
+    data_df['lon'] =  pd.to_numeric(data_df['4_Specify_the_positi.latitude'], errors='coerce')
+    data_df["status_request"]="ON_GOING"
+    # data_df=data_df.rename(columns={'3_Enter_Your_Email':'user_mail'})
+    data_geodf = gpd.GeoDataFrame(data_df,geometry=gpd.points_from_xy(data_df['lon'], data_df['lat']))
+    data_geodf.to_postgis('ep5', engine, if_exists='replace')
+    
+    return data_geodf
+
+    # conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
+    
+    # cur = conn.cursor()
+    
+    # distress_update = ("ALTER TABLE ep5 ADD status_request varchar(255) DEFAULT 'ON_GOING'")
+    
+    # cur.execute(distress_update)
+
+update_req_ep5()
+
+
 def close_dbConn():
     if 'dbConn' in g:
         g.dbComm.close()
         g.pop('dbConn')
+
+@app.route('/user_requests', methods=('GET', 'POST'))        
+def requests_user():
+    loading=load_admin() #now we are passing a list
+    user_mail=loading[1] #Mail of user
+    conn = get_dbConn()
+    cur = conn.cursor()
+    cur.execute(
+        'SELECT * FROM ep5 WHERE "3_Enter_Your_Email" = %s', (user_mail,)
+    )
+    
+    df_requests = cur.fetchall()
+    
+    cur.close()
+    conn.commit()
+    return render_template('userrequests/index.html', ep5=df_requests)
+
+@app.route('/modify_requests', methods=('GET', 'POST'))        
+def change_status():
+
+    update_req_ep5()
+    
+    conn = get_dbConn()
+    cur = conn.cursor()
+       
+    cur.execute('SELECT * FROM ep5')
+    
+    df_requests = cur.fetchall()
+ 
+    dataframe_requests=pd.DataFrame(df_requests)
+    
+    if request.method == 'POST':
+
+          for row in range(len(dataframe_requests)):
+             
+             if request.form['submit_button'] == row[0]:
+    
+                     distress_update = ("UPDATE TABLE ep5 SET status_request='IN_CHARGE' WHERE ec5_uuid == %s", (row[0],))
+    
+                     cur.execute(distress_update)
+    
+    cur.close()
+    conn.commit()
+    
+    return render_template('userrequests/index.html', ep5=df_requests)
 
 @app.route('/admin-request', methods=('GET', 'POST'))
 def registeradmin():
@@ -126,13 +197,7 @@ def dash_make():
 @app.route('/map')
 def map_():
     
-    response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')
-    raw_data = response.text
-    data = json.loads(raw_data)
-    data_df = pd.json_normalize(data['data']['entries'])
-    data_df['lat'] = pd.to_numeric(data_df['4_Specify_the_positi.longitude'], errors='coerce')
-    data_df['lon'] =  pd.to_numeric(data_df['4_Specify_the_positi.latitude'], errors='coerce')
-    data_geodf = gpd.GeoDataFrame(data_df, geometry=gpd.points_from_xy(data_df['lon'], data_df['lat']))
+    data_geodf=update_req_ep5()
     m = folium.Map(location=[45.46, 9.19], zoom_start=13, tiles='CartoDB positron')
     marker_cluster = MarkerCluster().add_to(m)
     for indice, row in data_geodf.iterrows():
@@ -147,7 +212,8 @@ def map_():
 
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():
-    user_type=load_admin()
+    loading=load_admin() #now we are passing a list
+    user_type=loading[0] #For that reason we are getting the 1st value
     if user_type==0 or user_type==None:
         return redirect(url_for('access_denied'))
     else :
@@ -301,9 +367,10 @@ def load_admin():
         )
         g.user = cur.fetchone()
         admin=g.user[4]
+        mail=g.user[3]
         cur.close()
         conn.commit()
-        return admin
+        return [admin,mail]
 
 
 # Create a URL route in our application for "/"
