@@ -299,7 +299,8 @@ def register():
             'SELECT user_id FROM jam_user WHERE user_mail = %s', (mail,))
             if cur.fetchone() is not None:
                 error = 'This mail {} is already registered.'.format(mail)
-                cur.close()
+            
+            cur.close()
                 
         if error is None:
             conn = get_dbConn()
