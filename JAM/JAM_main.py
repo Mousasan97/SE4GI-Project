@@ -289,7 +289,6 @@ def register():
             'SELECT user_id FROM jam_user WHERE user_name = %s', (username,))
             if cur.fetchone() is not None:
                 error = 'User {} is already registered.'.format(username)
-                cur.close()
                 
              #new below  
             cur.execute(
