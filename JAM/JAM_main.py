@@ -86,18 +86,22 @@ def close_dbConn():
 @app.route('/user_requests', methods=('GET', 'POST'))        
 def requests_user():
     loading=load_admin() #now we are passing a list
-    user_mail=loading[0] #Mail of user
-    conn = get_dbConn()
-    cur = conn.cursor()
-    cur.execute(
-        'SELECT * FROM ep5 WHERE "3_Enter_Your_Email" = %s', (user_mail,)
-    )
-    
-    df_requests = cur.fetchall()
-    
-    cur.close()
-    conn.commit()
-    return render_template('distresess_user.html', ep5=df_requests)
+    if loading[0]==0:
+        flash('you should login for seeing user requests')
+        return redirect(url_for('login'))
+    else:
+        user_mail=loading[0] #Mail of user
+        conn = get_dbConn()
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM ep5 WHERE "3_Enter_Your_Email" = %s', (user_mail,)
+        )
+        
+        df_requests = cur.fetchall()
+        
+        cur.close()
+        conn.commit()
+        return render_template('distresess_user.html', ep5=df_requests)
 
 ##TO MERGE INTO A UNIQUE FUNCTION WITH THE PREVIOUS ONE AND IMPLEMENT
 # @app.route('/modify_requests', methods=('GET', 'POST'))        
