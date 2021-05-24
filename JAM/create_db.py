@@ -60,7 +60,7 @@ sqlCommands = (
         'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
         )       
 
-conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
+conn = connect("host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'")
 cur = conn.cursor()
 
 for command in cleanup :
@@ -70,7 +70,7 @@ for command in commands :
     cur.execute(command)
     print('execute command')
     
-cur.execute(sqlCommands[0], ('Giuseppe', '3ety3e7', 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> admin_user
+cur.execute(sqlCommands[0], ('Giuseppe', generate_password_hash('3ety3e7'), 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> specialized user | admin=2 -> Super User
 pw='Geoinfo2021'
 admin_pass=generate_password_hash(pw)
 cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','2')) 

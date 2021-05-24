@@ -189,8 +189,7 @@ def access_denied():
 
 @app.route('/dash')
 def dash_make():
-    loading=load_admin()
-    user_type=loading[1]
+    [email,user_type]=load_admin()
     if user_type==0 or user_type==None:
         return redirect(url_for('access_denied'))
     #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
@@ -364,9 +363,10 @@ def load_logged_in_user():
 
 def load_admin():
     user_id = session.get('user_id')
-
     if user_id is None:
         g.user = None
+        admin=0
+        mail=0
     else:
         conn = get_dbConn()
         cur = conn.cursor()
@@ -378,7 +378,7 @@ def load_admin():
         admin=g.user[4]
         cur.close()
         conn.commit()
-        return [mail, admin]
+    return [mail, admin]
 
 
 # Create a URL route in our application for "/"
