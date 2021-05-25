@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  {% if g.user %}
+
+   <body>
+    
+
+         <h4>Here you could be redirected to a place where you can include any distress have you find in the road network of Milano</h4>
+    
+        <a href="https://five.epicollect.net/project/mrnm">ADD A NEW REQUEST IN EPICOLLECT</a>
+
+         <h4>Check your work by detecting distresess</h4>
+        <a href="/user_requests">Check the requests uploaded by you</a>
+
+    </body>
+    {% else %}
+
+       <body>
+    
+
+         <h2>Register or log in in the Web APP to enjoy all its functionalities</h2>
+    
+
+    </body>
+
+    
+  {% endif %}
+{% endblock %}
+

@@ -67,14 +67,6 @@ def update_req_ep5():
     
     return data_geodf
 
-    # conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
-    
-    # cur = conn.cursor()
-    
-    # distress_update = ("ALTER TABLE ep5 ADD status_request varchar(255) DEFAULT 'ON_GOING'")
-    
-    # cur.execute(distress_update)
-
 update_req_ep5()
 
 
@@ -102,36 +94,6 @@ def requests_user():
         cur.close()
         conn.commit()
         return render_template('distresess_user.html', ep5=df_requests)
-
-##TO MERGE INTO A UNIQUE FUNCTION WITH THE PREVIOUS ONE AND IMPLEMENT
-# @app.route('/modify_requests', methods=('GET', 'POST'))        
-# def change_status():
-
-#     update_req_ep5()
-    
-#     conn = get_dbConn()
-#     cur = conn.cursor()
-       
-#     cur.execute('SELECT * FROM ep5')
-    
-#     df_requests = cur.fetchall()
- 
-#     dataframe_requests=pd.DataFrame(df_requests)
-    
-#     if request.method == 'POST':
-
-#           for row in range(len(dataframe_requests)):
-             
-#              if request.form['submit_button'] == row[0]:
-    
-#                      distress_update = ("UPDATE TABLE ep5 SET status_request='IN_CHARGE' WHERE ec5_uuid == %s", (row[0],))
-    
-#                      cur.execute(distress_update)
-    
-#     cur.close()
-#     conn.commit()
-    
-#     return render_template('userrequests/index.html', ep5=df_requests)
 
 @app.route('/admin-request', methods=('GET', 'POST'))
 def registeradmin():
@@ -396,106 +358,11 @@ def load_admin():
 @app.route('/')
 @app.route('/index')
 def index():
-    conn = get_dbConn()
-    cur = conn.cursor()
-    cur.execute(
-            """SELECT jam_user.user_name, post.post_id, post.created, post.title, post.body 
-               FROM jam_user, post WHERE  
-                    jam_user.user_id = post.author_id"""
-                    )
-    posts = cur.fetchall()
-    cur.close()
-    conn.commit()
+
     load_logged_in_user()
 
-    return render_template('blog/index.html', posts=posts)
-
-@app.route('/create', methods=('GET', 'POST'))
-def create():
-    if load_logged_in_user():
-        if request.method == 'POST' :
-            title = request.form['title']
-            body = request.form['body']
-            error = None
-            
-            if not title :
-                error = 'Title is required!'
-            if error is not None :
-                flash(error)
-                return redirect(url_for('index'))
-            else : 
-                conn = get_dbConn()
-                cur = conn.cursor()
-                cur.execute('INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)', 
-                            (title, body, g.user[0])
-                            )
-                cur.close()
-                conn.commit()
-                return redirect(url_for('index'))
-        else :
-            return render_template('blog/create.html')
-    else :
-        error = 'Only loggedin users can insert posts!'
-        flash(error)
-        return redirect(url_for('login'))
-   
-def get_post(id):
-    conn = get_dbConn()
-    cur = conn.cursor()
-    cur.execute(
-        """SELECT *
-           FROM post
-           WHERE post.post_id = %s""",
-        (id,)
-    )
-    post = cur.fetchone()
-    cur.close()
-    if post is None:
-        abort(404, "Post id {0} doesn't exist.".format(id))
-
-    if post[1] != g.user[0]:
-        abort(403)
-
-    return post
-
-@app.route('/<int:id>/update', methods=('GET', 'POST'))
-def update(id):
-    if load_logged_in_user():
-        post = get_post(id)
-        if request.method == 'POST' :
-            title = request.form['title']
-            body = request.form['body']
-            error = None
-            
-            if not title :
-                error = 'Title is required!'
-            if error is not None :
-                flash(error)
-                return redirect(url_for('index'))
-            else : 
-                conn = get_dbConn()
-                cur = conn.cursor()
-                cur.execute('UPDATE post SET title = %s, body = %s'
-                               'WHERE post_id = %s', 
-                               (title, body, id)
-                               )
-                cur.close()
-                conn.commit()
-                return redirect(url_for('index'))
-        else :
-            return render_template('blog/update.html', post=post)
-    else :
-        error = 'Only loggedin users can insert posts!'
-        flash(error)
-        return redirect(url_for('login'))
-
-@app.route('/<int:id>/delete', methods=('POST',))
-def delete(id):
-    conn = get_dbConn()                
-    cur = conn.cursor()
-    cur.execute('DELETE FROM post WHERE post_id = %s', (id,))
-    conn.commit()
-    return redirect(url_for('index'))                               
+    return render_template('structure/index.html')
+                             
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
