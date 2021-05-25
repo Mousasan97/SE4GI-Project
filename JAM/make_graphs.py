@@ -79,8 +79,7 @@ def dash_():
 
     fig2.write_html("templates/bar_size.html")
 
-    fig3 = go.Figure(data=[go.Bar(x=c, y=d,
-                hovertext=c)])
+    fig3 = go.Figure(data=[go.Bar(x=c, y=d,hovertext=c)])
     # Customize aspect
     fig3.update_traces(marker_color='rgb(220,20,60)', marker_line_color='rgb(128,128,128)',
                       marker_line_width=1.5, opacity=0.6)
