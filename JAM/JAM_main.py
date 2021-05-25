@@ -37,7 +37,7 @@ app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')   
+engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')      #Alessandro -> 'postgresql://JAM:SWfire07@localhost:5432/JAM_db'
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -360,8 +360,8 @@ def load_admin():
 def index():
 
     load_logged_in_user()
-
-    return render_template('structure/index.html')
+    [em,ad]=load_admin()
+    return render_template('structure/index.html',ad=ad)
                              
 
 # If we're running in stand alone mode, run the application

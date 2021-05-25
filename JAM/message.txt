@@ -1,6 +1,6 @@
 Dear MRNM team,
 
-A new request for admin permissions has been submitted to your website.
+A new request for Specialized User permissions has been submitted to your website.
 Those are the user informations:
 
 - Name:		     ${U_NAME}
