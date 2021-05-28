@@ -92,7 +92,7 @@ def requests_user():
         
         cur.close()
         conn.commit()
-        return render_template('distresess_user.html', ep5=df_requests)
+        return render_template('distresess_user.html', ep5=df_requests, ad=loading[1])
 
 @app.route('/admin-request', methods=('GET', 'POST'))
 def registeradmin():
@@ -201,6 +201,9 @@ def admin_register():
                 error = 'Username is required.'
             elif not password:
                 error = 'Password is required.'
+                
+            elif len(password) < 5:
+                error = 'Password should be at least 5 characters long'
     
             elif not mail:
                 error = 'Mail is required.'
@@ -223,11 +226,11 @@ def admin_register():
                 )
                 cur.close()
                 conn.commit()
-                return redirect(url_for('login'))
+                return redirect(url_for('index'))
     
             flash(error)
     
-        return render_template('auth/register.html',ad=loading[1])
+        return render_template('auth/spec_us_register.html',ad=loading[1])
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
@@ -243,6 +246,8 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif len(password) < 5:
+                error = 'Password should be at least 5 characters long'
 
         elif not mail:
             error = 'Mail is required.'
