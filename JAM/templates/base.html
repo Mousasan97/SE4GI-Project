@@ -5,12 +5,19 @@
 <nav>
   <h1><a href="/index">RODI - Milano Road Network Monitor</a></h1>
 
-    {% if (ad==1) or (ad==2) %}
+    {% if (ad==1) %}
       Welcome {{ g.user[1] }}!
       <ul>
       <li><a href="/logout">Log Out</a></li>
-      <li><a href="/map">Map</a>
       <li><a href="/dash">Dashboard</a>
+
+      </ul>
+    {% elif (ad==2) %}
+      Welcome {{ g.user[1] }}!
+      <ul>
+      <li><a href="/logout">Log Out</a></li>
+      <li><a href="/dash">Dashboard</a>
+      <li><a href="/admin-register">Special registration</a>
 
       </ul>
     {% elif (g.user) and (ad==0) %}

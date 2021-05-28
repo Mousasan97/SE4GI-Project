@@ -16,17 +16,13 @@ from psycopg2 import (
         connect
 )
 from sqlalchemy import create_engine
-import json
-import pandas as pd
-import geopandas as gpd
-import folium
-from folium.plugins import MarkerCluster
-import requests
 from string import Template
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from make_graphs import dash_
+from create_map import map_
+from get_data_ep5 import update_req_ep5
 
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -35,8 +31,8 @@ app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-#engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+# engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
+engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -50,21 +46,6 @@ def get_dbConn():
         g.dbConn = connect(connStr)
     
     return g.dbConn
-
-def update_req_ep5():
-    
-    response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')
-    raw_data = response.text
-    data = json.loads(raw_data)
-    data_df = pd.json_normalize(data['data']['entries'])
-    data_df['lat'] = pd.to_numeric(data_df['4_Specify_the_positi.longitude'], errors='coerce')
-    data_df['lon'] =  pd.to_numeric(data_df['4_Specify_the_positi.latitude'], errors='coerce')
-    data_df["status_request"]="ON_GOING"
-    # data_df=data_df.rename(columns={'3_Enter_Your_Email':'user_mail'})
-    data_geodf = gpd.GeoDataFrame(data_df,geometry=gpd.points_from_xy(data_df['lon'], data_df['lat']))
-    data_geodf.to_postgis('ep5', engine, if_exists='replace')
-    
-    return data_geodf
 
 update_req_ep5()
 
@@ -165,20 +146,9 @@ def dash_make():
     return render_template('dash_templ.html')
 
 @app.route('/map')
-def map_():
-    
-    data_geodf=update_req_ep5()
-    m = folium.Map(location=[45.46, 9.19], zoom_start=13, tiles='CartoDB positron')
-    marker_cluster = MarkerCluster().add_to(m)
-    for indice, row in data_geodf.iterrows():
-        folium.Marker(
-            location=[row["lon"], row["lat"]],
-            popup=row['7_Classify_the_distr'],
-            icon=folium.map.Icon(color='red')
-        ).add_to(marker_cluster)
-    m.save('templates/map_outp.html')
-
-    return render_template('map_fol.html')
+def map_a():
+    map_()
+    return render_template('map_fol.html') 
 
 @app.route('/admin-register', methods=('GET', 'POST'))
 def admin_register():

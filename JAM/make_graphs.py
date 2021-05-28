@@ -110,6 +110,3 @@ def dash_():
     fig5.update_layout(font_family="Roboto",font_color="blue")
 
     fig5.write_html("templates/bar_risk.html")
-
-
-
