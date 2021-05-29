@@ -53,9 +53,18 @@ def dash_():
     g=list(Risk_level['Category'])
     h=list(Risk_level['Quantity'])
     
+    data_geodf["size_chart"]=10
     
-    fig = px.scatter_mapbox(data_geodf, lat="lon", lon="lat", hover_name="7_Classify_the_distr", hover_data=['7_Classify_the_distr'],
-                            color_discrete_sequence=["fuchsia"], zoom=15, height=300)
+    fig = px.scatter_mapbox(data_geodf, lat="lon", 
+                            lon="lat", 
+                            hover_name="7_Classify_the_distr", 
+                            hover_data=['7_Classify_the_distr'],
+                            size="size_chart",
+                            color_discrete_sequence=["Gold"], 
+                            zoom=12,
+                            opacity=0.6,
+                            height=400)
+    
     
     fig.update_geos(fitbounds="locations")
     
