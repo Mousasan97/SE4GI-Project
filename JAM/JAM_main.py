@@ -31,8 +31,8 @@ app = Flask(__name__, template_folder="templates")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-# engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
+#engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -178,6 +178,9 @@ def admin_register():
             elif not mail:
                 error = 'Mail is required.'
                 
+            elif ('@' not in mail) or ('.' not in mail):
+                error = 'Insert a valid e-mail address'
+                
             else :
                 conn = get_dbConn()
                 cur = conn.cursor()
@@ -221,6 +224,9 @@ def register():
 
         elif not mail:
             error = 'Mail is required.'
+            
+        elif ('@' not in mail) or ('.' not in mail):
+                error = 'Insert a valid e-mail address'
             
         else :
             conn = get_dbConn()
