@@ -32,7 +32,7 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 #engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -54,6 +54,55 @@ def close_dbConn():
     if 'dbConn' in g:
         g.dbComm.close()
         g.pop('dbConn')
+
+
+@app.route('/all_requests', methods=('GET', 'POST'))        
+def requests():
+    loading=load_admin() #now we are passing a list
+    if loading[0]==0:
+        flash('you should login for seeing user requests')
+        return redirect(url_for('login'))
+    else:
+       # user_mail=loading[0] #Mail of user
+        conn = get_dbConn()
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM ep5'
+        )
+        
+        df_requests = cur.fetchall()
+        
+        cur.close()
+        conn.commit()
+        return render_template('change_status.html', ep5=df_requests, ad=loading[1])
+    
+
+def update_request(request):
+    conn = get_dbConn()
+    cur = conn.cursor()
+    
+    new='complete'
+   
+    cur.execute("""
+                UPDATE ep5 
+                SET status_request = %s 
+                WHERE title = %s 
+                """ , (new , request,))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+
+
+@app.route('/flip', methods=('GET', 'POST'))
+def flip():
+   # input=request.form["flip"]  
+   input=request.form["flip"] 
+   update_request(input)   
+   return redirect(url_for('requests'))    
+
+
 
 @app.route('/user_requests', methods=('GET', 'POST'))        
 def requests_user():
