@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'
-=======
-host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'
->>>>>>> 8f385c1f4e214e8bc08d2750101511f21ca848e7

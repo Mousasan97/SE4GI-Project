@@ -51,12 +51,7 @@ def db_connecting_df():
 def dash_():
     
         
-    #conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'")
 
-    # conn = connect("host='localhost' port='5432' dbname='JAM_db' user='JAM' password='SWfire07'")
-    
-    # conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
-    
     gr_df= db_connecting_df()
     
     gr_geo_df = gpd.GeoDataFrame(gr_df, geometry=gpd.points_from_xy(gr_df['lon'], gr_df['lat']))
