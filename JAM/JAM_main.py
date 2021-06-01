@@ -33,7 +33,8 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 #engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
 #engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
-engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
+#engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -60,9 +61,8 @@ def close_dbConn():
 @app.route('/all_requests', methods=('GET', 'POST'))        
 def requests():
     loading=load_admin() #now we are passing a list
-    if loading[0]==0:
-        flash('you should login for seeing user requests')
-        return redirect(url_for('login'))
+    if loading[1]==0:
+        return redirect(url_for('access_denied'))
     else:
        # user_mail=loading[0] #Mail of user
         conn = get_dbConn()
