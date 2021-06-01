@@ -12,8 +12,8 @@ from sqlalchemy import create_engine
 
 def update_req_ep5():
     
-    #engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-    engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
+    engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
+    #engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
     response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')
     raw_data = response.text
     data = json.loads(raw_data)
