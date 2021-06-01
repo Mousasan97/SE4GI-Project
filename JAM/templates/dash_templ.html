@@ -2,12 +2,13 @@
 {% block title %} RODI - Milano Road Network Monitor {% endblock %}
 {% block head %} {{ super() }} {% endblock %}
 {% block body %}
-    {% include "map_analytics.html" %}
-    {% include "req_day_plot.html" %}
-    {% include "user_req_plot.html" %}
-    {% include "scatter_clustering.html" %}
-    {% include "bar_size.html" %}
-    {% include "bar_kind_of_distr.html" %}
-    {% include "bar_risk.html" %}
-    {% include "bar_material.html" %}
+    {% include "tmp/map_analytics.html" %}
+    {% include "tmp/status_requests.html" %}   
+    {% include "tmp/req_day_plot.html" %}
+    {% include "tmp/user_req_plot.html" %}
+    {% include "tmp/scatter_clustering.html" %}
+    {% include "tmp/bar_size.html" %}
+    {% include "tmp/bar_kind_of_distr.html" %}
+    {% include "tmp/bar_risk.html" %}
+    {% include "tmp/bar_material.html" %}
 {% endblock %}

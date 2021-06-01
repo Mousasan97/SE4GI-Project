@@ -32,7 +32,8 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 #engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
+#engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
+engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -81,7 +82,7 @@ def update_request(request):
     conn = get_dbConn()
     cur = conn.cursor()
     
-    new='complete'
+    new='Complete'
    
     cur.execute("""
                 UPDATE ep5 
@@ -91,9 +92,6 @@ def update_request(request):
     conn.commit()
     cur.close()
     conn.close()
-
-
-
 
 @app.route('/flip', methods=('GET', 'POST'))
 def flip():
@@ -189,10 +187,10 @@ def dash_make():
         return redirect(url_for('access_denied'))
     #Invoke the function that is in the script "make_graphs.py" which create all the HTML files of the graphs for the webapp
     else:
+        
         dash_()
-   
-    #Then, Jinja renders the html template with all the graphs.  
-    return render_template('dash_templ.html')
+        #Then, Jinja renders the html template with all the graphs.  
+        return render_template('dash_templ.html')
 
 @app.route('/map')
 def map_a():
