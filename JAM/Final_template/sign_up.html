@@ -9,7 +9,7 @@
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 
-    <title>Host Cloud - Free HTML5 Bootstrap Template</title>
+    <title>RODI App</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,96 +43,27 @@ https://templatemo.com/tm-541-host-cloud
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="index.html"><h2>RODI <em>App</em></h2></a>
+          <a class="navbar-brand" href="/index"><h2>RODI <em>App</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-             
-           
-              
-              
-            {% if (g.user) and (ad==0) %}
-             Welcome {{ g.user[1] }}!
-             <p>Citizen</p>
-               
               <li class="nav-item">
-                <a class="nav-link" href="/user_requests">My Requests </a>
-              </li>    
-             
-              <li class="nav-item">
-                <a class="nav-link" href="/map">Map</a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact Us</a>
-              </li>
-              
-
-  
-            {% elif (ad==2) %}
-             <p>Super</p>
-               
-                <li class="nav-item active">
-                  <a class="nav-link" href="index.html">Home
-                    <span class="sr-only">(current)</span>
-                  </a>
-                </li>
-             
-                <li class="nav-item">
-                  <a class="nav-link" href="/dash">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/map">Map</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/all_requests">Maintenance Requests</a>
-                </li>
-            
-            {% elif (ad==1) %}
-                Welcome {{ g.user[1] }}!
-                <p>Specialized/p>
-                <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home
+                <a class="nav-link" href="/index">Home
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
-           
-              <li class="nav-item">
-                <a class="nav-link" href="/dash">Dashboard</a>
+            
+              <li class="nav-item active">
+                <a class="nav-link" href="/contact">sign up</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/map">Map</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/all_requests">Maintenance Requests</a>
-              </li>
-          
-
-
-
-
-
-
-            {% else %}
-             <p>not signed in</p>
-           <li class="nav-item">
-                <a class="nav-link" href="/map">Map</a>
-              </li>
-               <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/register">Sign up</a>
-              </li>
-            {% endif %} 
             </ul>
           </div>
           <div class="functional-buttons">
             <ul>
               <li><a href="/login">Log in</a></li>
-             
+              
             </ul>
           </div>
         </div>
@@ -140,56 +71,75 @@ https://templatemo.com/tm-541-host-cloud
     </header>
 
     <!-- Page Content -->
-    <!-- Banner Starts Here -->
-    <div class="banner">
+    <!-- Heading Starts Here -->
+    <div class="page-heading header-text">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 offset-md-2">
-            <div class="header-text caption">
-              <h2 style="font-size:130px" text-align="center" >Welcome to RODI.</h2>
+          <div class="col-md-12">
+            <h1>Citizen Membership</h1>
+            <p><a href="/index">Home</a> / <span>Citizen Membership</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Heading Ends Here -->
+
+
+    <!-- Contact Us Starts Here -->
+    <div class="contact-us">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="contact-form">
+              <form id="contact" action="" method="post">
+                <div class="row">
+                  <div class="col-md-12 col-sm-12">
+                    <fieldset>
+                      <input name="username" id="name" placeholder="Your name" required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-md-12 col-sm-12">
+                    <fieldset>
+                      <input name="mail" type="text" id="mail" placeholder="Your email" required="">
+                    </fieldset>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12">
+                    <fieldset>
+                      <input type="password" name="password" id="password" placeholder="Password" required="">
+                    </fieldset>
+                  </div>
+
+
+                  
+                 
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <button type="submit" id="form-submit" class="main-button">Sign Up</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+          </div>
+          </div>
+          <div class="col-md-6">
+            <div class="right-content">
+              <div class="section-heading">
+                <span>Specialized Registration</span>
+                <h2>Let's keep in touch</h2>
+                <p>Quisque sagittis blandit sapien et elementum. Fusce pretium viverra consequat. Aliquam at feugiat mi. Pellentesque hendrerit, felis ac sodales commodo.</p>
+              </div>
               
-               </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Banner Ends Here -->
-
-    <!-- Trusted Starts Here -->
-    
-    <!-- Trusted Ends Here -->
+    <!-- Contact Us Ends Here -->
 
 
-    <!-- Services Starts Here -->
-    <div class="services-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="section-heading">
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Services Ends Here -->
-
-
-    <!-- Pricing Starts Here -->
- 
-    <!-- Pricing Ends Here -->
-
-
-    <!-- Features Starts Here -->
-    
-    <!-- Features Ends Here -->
-
-
-    <!-- Testimonials Starts Here -->
-    
-    <!-- Testimonials Ends Here -->
+   
 
 
     <!-- Footer Starts Here -->
@@ -268,9 +218,6 @@ https://templatemo.com/tm-541-host-cloud
     <script src="../static/assets/js/custom.js"></script>
     <script src="../static/assets/js/owl.js"></script>
     <script src="../static/assets/js/accordions.js"></script>
-
-    <!--Login button-->
-    
 
 
     <script language = "text/Javascript"> 
