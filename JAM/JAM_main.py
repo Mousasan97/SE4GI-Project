@@ -175,6 +175,8 @@ def registeradmin():
 def success():
     return render_template('success.html')
 
+
+
 @app.route('/access-denied')
 def access_denied():
     return render_template('access_denied.html')
@@ -379,6 +381,9 @@ def load_admin():
         conn.commit()
     return [mail, admin]
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 # Create a URL route in our application for "/"
 @app.route('/')
