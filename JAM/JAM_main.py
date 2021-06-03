@@ -305,7 +305,7 @@ def register():
 
         flash(error)
 
-    return render_template('login_test.html')
+    return render_template('auth/register.html')
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -376,7 +376,7 @@ def load_admin():
         )
         g.user = cur.fetchone()
         mail=g.user[3]
-        admin=g.user[4]
+        admin=g.user[7]
         cur.close()
         conn.commit()
     return [mail, admin]

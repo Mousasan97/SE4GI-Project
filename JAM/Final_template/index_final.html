@@ -52,7 +52,7 @@ https://templatemo.com/tm-541-host-cloud
              
              
            {% if (ad==2) %}
-             Welcome {{ g.user[1] }}!
+            
              
               <li class="nav-item active">
                 <a class="nav-link" href="index.html">Home
@@ -61,39 +61,35 @@ https://templatemo.com/tm-541-host-cloud
               </li>
            
               <li class="nav-item">
-                <a class="nav-link" href="Map.html">Dashboard</a>
+                <a class="nav-link" href="/dash">Dashboard</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="services.html">Map</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="Map.html">Maintenance Requests</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact Us</a>
-              </li>
-              
-              
-           {% elif (g.user) and (ad==0) %}
-              Welcome {{ g.user[1] }}!
-               
-                  
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home
-                  <span class="sr-only">(current)</span>
-                </a>
+                <a class="nav-link" href="/all_requests">Maintenance Requests</a>
               </li>
           
+              
+              
+           {% elif (ad==0) %}
+           
+               
+              <li class="nav-item">
+                <a class="nav-link" href="/user_requests">My Requests</a>
+              </li>    
+             
               <li class="nav-item">
                 <a class="nav-link" href="services.html">Map</a>
               </li>
               
               <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact Us</a>
+                <a class="nav-link" href="/contact">Contact Us</a>
               </li>
               
            {% else %}
-              <li class="nav-item">
+            
+           <li class="nav-item">
                 <a class="nav-link" href="/map">Map</a>
               </li>
                <li class="nav-item">
