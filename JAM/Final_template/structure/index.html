@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  {% if (g.user) and (ad!=1) and (ad!=2) %}
+
+   <body>
+    
+
+        <h4>Add a new road maintenance request through Epicollect5 or check your uploaded requests</h4>
+        <ul>
+            <li><a href="https://five.epicollect.net/project/mrnm">EP5</a></li>
+            <li><a href="/user_requests">My requests</a></li>
+        </ul>
+    </body>
+    {% elif (ad==1) or (ad==2) %}
+    
+    <body>
+        
+        <h2>Page still under development...</h2>
+    
+    </body>
+    
+    {% else %}
+
+       <body>
+    
+
+         <h2>Register or log in in the Web APP to enjoy all its functionalities</h2>
+    
+
+    </body>
+
+    
+  {% endif %}
+{% endblock %}
+

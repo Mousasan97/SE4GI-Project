@@ -27,13 +27,13 @@ from get_data_ep5 import update_req_ep5
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 # Create the application instance
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="Final_template")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+#engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
 # engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
-#engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
+engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
 
 def read_template(filename):
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -299,11 +299,11 @@ def register():
             )
             cur.close()
             conn.commit()
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
 
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template('login_test.html')
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -332,7 +332,7 @@ def login():
 
         flash(error)
 
-    return render_template('auth/login.html')
+    return render_template('login_test.html')
 
 
 @app.route('/logout')
@@ -387,7 +387,7 @@ def index():
 
     load_logged_in_user()
     [em,ad]=load_admin()
-    return render_template('structure/index.html',ad=ad)
+    return render_template('index_final.html',ad=ad)
                              
 
 # If we're running in stand alone mode, run the application

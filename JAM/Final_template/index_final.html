@@ -12,12 +12,12 @@
     <title>Host Cloud - Free HTML5 Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-host-cloud.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="../static/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="../static/assets/css/templatemo-host-cloud.css">
+    <link rel="stylesheet" href="../static/assets/css/owl.css">
 <!--
 
 Host Cloud Template
@@ -49,11 +49,17 @@ https://templatemo.com/tm-541-host-cloud
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+             
+             
+           {% if (ad==2) %}
+             Welcome {{ g.user[1] }}!
+             
               <li class="nav-item active">
                 <a class="nav-link" href="index.html">Home
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
+           
               <li class="nav-item">
                 <a class="nav-link" href="Map.html">Dashboard</a>
               </li>
@@ -67,12 +73,39 @@ https://templatemo.com/tm-541-host-cloud
                 <a class="nav-link" href="contact.html">Contact Us</a>
               </li>
               
+              
+           {% elif (g.user) and (ad==0) %}
+              Welcome {{ g.user[1] }}!
+               
+                  
+              <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+          
+              <li class="nav-item">
+                <a class="nav-link" href="services.html">Map</a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="contact.html">Contact Us</a>
+              </li>
+              
+           {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="services.html">Map</a>
+              </li>
+               <li class="nav-item">
+                <a class="nav-link" href="contact.html">Contact Us</a>
+              </li>
+           {% endif %} 
             </ul>
           </div>
           <div class="functional-buttons">
             <ul>
-              <li><a href="login_test.html">Log in</a></li>
-              <li><a href="login_test.html">Sign Up</a></li>
+              <li><a href="/login">Log in</a></li>
+             
             </ul>
           </div>
         </div>
@@ -86,7 +119,7 @@ https://templatemo.com/tm-541-host-cloud
         <div class="row">
           <div class="col-md-8 offset-md-2">
             <div class="header-text caption">
-              <h2 style="font-size:130px" >RODI.</h2>
+              <h2 style="font-size:130px" text-align="center" >Welcome to RODI.</h2>
               
                </div>
               </div>
@@ -201,13 +234,13 @@ https://templatemo.com/tm-541-host-cloud
     <!-- Footer Ends Here -->
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Additional Scripts -->
-    <script src="assets/js/custom.js"></script>
-    <script src="assets/js/owl.js"></script>
-    <script src="assets/js/accordions.js"></script>
+    <script src="../static/assets/js/custom.js"></script>
+    <script src="../static/assets/js/owl.js"></script>
+    <script src="../static/assets/js/accordions.js"></script>
 
 
     <script language = "text/Javascript"> 
