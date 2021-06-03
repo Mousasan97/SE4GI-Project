@@ -43,7 +43,7 @@ https://templatemo.com/tm-541-host-cloud
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="index.html"><h2>RODI <em>App</em></h2></a>
+          <a class="navbar-brand" href="/index"><h2>RODI <em>App</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -69,6 +69,13 @@ https://templatemo.com/tm-541-host-cloud
                 <a class="nav-link" href="/contact">Contact Us</a>
               </li>
               
+              <div class="functional-buttons">
+                <ul>
+                  <li><a href="/logout">Logout</a></li>
+                 
+                </ul>
+              </div>
+    
 
   
             {% elif (ad==2) %}
@@ -89,6 +96,13 @@ https://templatemo.com/tm-541-host-cloud
                 <li class="nav-item">
                   <a class="nav-link" href="/all_requests">Maintenance Requests</a>
                 </li>
+
+                <div class="functional-buttons">
+                  <ul>
+                    <li><a href="/logout">Logout</a></li>
+                   
+                  </ul>
+                </div>
             
             {% elif (ad==1) %}
                 Welcome {{ g.user[1] }}!
@@ -110,31 +124,53 @@ https://templatemo.com/tm-541-host-cloud
               </li>
           
 
-
+              <div class="functional-buttons">
+                <ul>
+                  <li><a href="/logout">Logout</a></li>
+                 
+                </ul>
+              </div>
 
 
 
 
             {% else %}
              <p>not signed in</p>
-           <li class="nav-item">
+          
+             <li class="nav-item active">
+              <a class="nav-link" href="/index">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+          
+          
+          
+             <li class="nav-item">
                 <a class="nav-link" href="/map">Map</a>
               </li>
-               <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact Us</a>
-              </li>
+             
               <li class="nav-item">
                 <a class="nav-link" href="/register">Sign up</a>
               </li>
-            {% endif %} 
+           
             </ul>
           </div>
+          
           <div class="functional-buttons">
             <ul>
-              <li><a href="/login">Log in</a></li>
+              <li><a href="/login">Login</a></li>
              
             </ul>
           </div>
+
+          {% endif %} 
+          
+          </div>
+          
+          
+         
+
+
         </div>
       </nav>
     </header>

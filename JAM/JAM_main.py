@@ -334,7 +334,7 @@ def login():
 
         flash(error)
 
-    return render_template('login_test.html')
+    return render_template('sign_in.html')
 
 
 @app.route('/logout')
