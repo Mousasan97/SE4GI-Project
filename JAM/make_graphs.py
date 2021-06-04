@@ -9,7 +9,8 @@ from psycopg2 import (connect)
 
 def db_connecting_df():
     
-    conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
+    #conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
+    conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'")
     
     command=('SELECT * FROM ep5')
     

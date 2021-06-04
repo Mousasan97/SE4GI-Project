@@ -12,7 +12,11 @@ from sqlalchemy import create_engine
 
 def update_req_ep5():
     
+<<<<<<< HEAD
    # engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+=======
+    #engine = create_engine('postgresql://postgres:admin@localhost:5433/postgres')
+>>>>>>> bf1446b9ee4cabda2380caebbf260ee38458707d
     engine = create_engine('postgresql://postgres:Alhamdulilah1_@localhost:5432/postgres')
     # engine = create_engine('postgresql://JAM:SWfire07@localhost:5432/JAM_db')
     response = requests.get('https://five.epicollect.net/api/export/entries/MRNM?per_page=100')

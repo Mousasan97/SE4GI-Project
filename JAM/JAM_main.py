@@ -27,7 +27,7 @@ from get_data_ep5 import update_req_ep5
 #<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 # Create the application instance
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="Final_template")
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -175,6 +175,8 @@ def registeradmin():
 def success():
     return render_template('success.html')
 
+
+
 @app.route('/access-denied')
 def access_denied():
     return render_template('access_denied.html')
@@ -299,11 +301,11 @@ def register():
             )
             cur.close()
             conn.commit()
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
 
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template('sign_up.html')
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -332,7 +334,7 @@ def login():
 
         flash(error)
 
-    return render_template('auth/login.html')
+    return render_template('sign_in.html')
 
 
 @app.route('/logout')
@@ -379,6 +381,9 @@ def load_admin():
         conn.commit()
     return [mail, admin]
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 # Create a URL route in our application for "/"
 @app.route('/')
@@ -387,7 +392,7 @@ def index():
 
     load_logged_in_user()
     [em,ad]=load_admin()
-    return render_template('structure/index.html',ad=ad)
+    return render_template('index_final.html',ad=ad)
                              
 
 # If we're running in stand alone mode, run the application
