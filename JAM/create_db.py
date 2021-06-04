@@ -10,8 +10,8 @@ from psycopg2 import (connect)
 from werkzeug.security import  generate_password_hash
 
 cleanup = (
-        'DROP TABLE IF EXISTS jam_user CASCADE',
-        'DROP TABLE IF EXISTS post'
+        'DROP TABLE IF EXISTS jam_user CASCADE'
+      
         )
 
 commands = (
@@ -24,40 +24,11 @@ commands = (
             admin INTEGER
 
         )
-        """,
-
-        """ 
-        CREATE TABLE post (
-                post_id SERIAL PRIMARY KEY,
-                author_id INTEGER NOT NULL,
-                created TIMESTAMP DEFAULT NOW(),
-                title VARCHAR(350) NOT NULL,
-                body VARCHAR(500) NOT NULL,
-                FOREIGN KEY (author_id)
-                    REFERENCES jam_user (user_id)
-        )
-        """
-#
-#        """ 
-#        CREATE TABLE requests_distresess (
-#                request_id SERIAL PRIMARY KEY,
-#                time TIME,
-#                date DATE NOT NULL,
-#                material VARCHAR(500) NOT NULL,
-#                kind_distress VARCHAR(500) NOT NULL,
-#                size VARCHAR(500) NOT NULL,
-#                risk VARCHAR(500) NOT NULL,
-#                latitude VARCHAR(500) NOT NULL,
-#                longitude VARCHAR(500) NOT NULL,
-#                FOREIGN KEY (user_mail_req)
-#                    REFERENCES jam_user (user_mail)
-#        )
-#        """        
+        """  
         )
 
 sqlCommands = (
-        'INSERT INTO jam_user (user_name, user_password, user_mail, admin) VALUES (%s, %s, %s, %s) RETURNING user_id',
-        'INSERT INTO post (title, body, author_id) VALUES (%s, %s, %s)'
+        'INSERT INTO jam_user (user_name, user_password, user_mail, admin) VALUES (%s, %s, %s, %s) RETURNING user_id'
         )       
 
 conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' password='Alhamdulilah1_'")
@@ -66,21 +37,23 @@ conn = connect("host='localhost' port='5432' dbname='postgres' user='postgres' p
 #conn = connect("host='localhost' port='5433' dbname='postgres' user='postgres' password='admin'")
 cur = conn.cursor()
 
-for command in cleanup :
-    cur.execute(command)
+
+cur.execute(cleanup)
     
-for command in commands :
-    cur.execute(command)
-    print('execute command')
+
+cur.execute(commands)
+print('execute command')
     
-cur.execute(sqlCommands[0], ('Giuseppe', generate_password_hash('3ety3e7'), 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> specialized user | admin=2 -> Super User
+cur.execute(sqlCommands, ('Giuseppe', generate_password_hash('3ety3e7'), 'giuseppe@aaa.com','0')) #admin=0 -> normal user | admin=1 -> specialized user | admin=2 -> Super User
 pw='Geoinfo2021'
 admin_pass=generate_password_hash(pw)
-cur.execute(sqlCommands[0], ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','2')) 
+cur.execute(sqlCommands, ('JAM', admin_pass, 'mrnm.jam.team@gmail.com','2')) 
+pw2='special'
+special_pass=generate_password_hash(pw2)
+cur.execute(sqlCommands, ('Specialized_user', admin_pass, 'special@gmail.com','1')) 
 userId = cur.fetchone()[0]
 
-cur.execute(sqlCommands[1], ('My First Post', 'This is the post body', userId))
-cur.execute('SELECT * FROM post')
+
 print(cur.fetchall())
 
 cur.close()
